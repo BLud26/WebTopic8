@@ -1,0 +1,20 @@
+body {
+    background: royalblue;
+    color: white;
+    font-family: Calibri, "Times New Roman", Times, serif;
+}
+
+#apod-image {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    /* hide the image, element is not visible*/
+    display: none;
+    box-sizing: border-box;
+}
+
+#apod-video{
+    width: 960px;
+    height: 540px;
+    display: none;
+}

@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Minneapolis Weather</title>
+    <link rel="stylesheet" href="style_weather.css" type="text/css"></link>
+    <script async defer src="fetch_weather.js"></script>
 </head>
+
 <body>
-$END$
+
+<h1>Minneapolis Weekly Weather Forecast</h1>
+
+<div>
+    <table id="weather-forecast">
+        <tr>
+            <th>Day</th>
+            <th>Temperature</th>
+            <th>Icon</th>
+            <th>Detailed Forecast</th>
+            <th>Wind</th> <!-- Added for part two of lab -->
+        </tr>
+
+        <!-- Use JavaScript to create table rows for the forecast -->
+
+    </table>
+</div>
+
+<cite>Data from <a href="https://www.weather.gov/documentation/services-web-api">National Weather Service API</a></cite>
+
 </body>
 </html>
