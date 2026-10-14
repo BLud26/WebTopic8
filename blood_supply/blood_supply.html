@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Reserves</title>
+</head>
+<body>
+
+<h1>Blood Reserves</h1>
+
+<label for="blood-group-abo">ABO Blood Group</label>
+<select id="blood-group-abo">
+    <option value="A">A</option>
+    <option value="AB">AB</option>
+    <option value="B">B</option>
+    <option value="O">O</option>
+</select>
+
+<br>
+
+<label for="blood-group-rh">Rh Factor</label>
+<select id="blood-group-rh">
+    <option value="positive">Positive</option>
+    <option value="negative">Negative</option>
+</select>
+
+<br>
+
+<button id="get-blood-units-button">Get blood units</button>
+
+<div id="display-blood-units">
+    <p>Blood group: <span id="blood-group-display"></span></p>
+    <p>Units available: <span id="units-available"></span></p>
+</div>
+
+<script>
+
+    // User input elements to get value of and know what data user entered
+    let bloodGroupAboInput = document.querySelector('#blood-group-abo')
+    let bloodGroupRhInput = document.querySelector('#blood-group-rh')
+
+    // button will add event listener so we know when the user clicked
+    let getBloodUnitsButton = document.querySelector('#get-blood-units-button')
+
+    // Span elements used to display result to user
+    let bloodGroupDisplay = document.querySelector('#blood-group-display')
+    let unitsAvailableDisplay = document.querySelector('#units-available')
+
+    getBloodUnitsButton.addEventListener('click', function() {
+
+        // TODO finish this code to make a request to the blood supply API
+        // The API endpoint is at https://blood-group-api.wl.r.appspot.com/
+        // request to get the number of units for the blood type entered
+        // display the blood group e.g. A+ or B- in the #blood-group-display element
+        // display the number of units for that blood group in the units-available element
+
+        // Question 1- how to make a request to the API and ask for specific blood types
+        // Question 2 - how is the data returned. Get the specific info and display in user-friendly way
+        // Question 3 - how to handle errors
+
+        let aboGroupValue = bloodGroupAboInput.value
+        let rhFactorValue = bloodGroupRhInput.value
+        console.log(aboGroupValue, rhFactorValue)
+
+        // Example API URL:
+        // https://blood-group-api.wl.r.appspot.com/api/blood_units_by_group?group=Apositive
+        let bloodType = aboGroupValue + rhFactorValue
+
+        let apiRequestUrl = 'https://blood-group-api.wl.r.appspot.com/api/blood_units_by_group?group=' + bloodType
+        console.log(apiRequestUrl)
+
+        fetch(apiRequestUrl, {signal: AbortSignal.timeout(5000)}) // Get the data from the response and convert it to JSON
+            .then( response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.status)
+                }
+                return response.json()
+            })
+            .then( jsonData => {
+                //console.log(jsonData)
+                let results = jsonData.results
+                console.log(results)
+
+                let availability = results.blood_availability
+                console.log(availability)
+
+                let unitsAvailable = availability.units_available
+                console.log(unitsAvailable)
+
+                unitsAvailableDisplay.innerHTML = unitsAvailable
+
+                //  display the blood group eg. A+ or AB- from the response
+
+
+                let groupName = availability.group_name
+                bloodGroupDisplay.innerHTML = groupName
+
+            })
+
+            .catch( error => {
+                // handle errors. Display error message.
+                console.log(error)
+
+                if (error.name === 'TimeoutError') {
+                    alert('The request took too long. The server may be down. Please try again.')
+                } else if (error.name === 'TypeError') {
+                    alert('Could not connect. Check your internet connection.')
+                } else {
+                    alert('Sorry, there was an error getting blood data. ' + error.message)
+                }
+            })
+
+    })
+
+</script>
+</body>
+</html>
